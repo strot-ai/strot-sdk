@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "strot-sdk"
-version = "0.1.0"
-description = "STROT SDK — Build tools, agents, and pipelines for your STROT instance"
+name = "strot"
+version = "0.1.1"
+description = "Build tools, agents, and pipelines for your STROT instance"
 authors = ["STROT AI <dev@strot.ai>"]
 license = "MIT"
 readme = "README.md"
 homepage = "https://strot.ai"
 repository = "https://github.com/strot-ai/strot-sdk"
-keywords = ["strot", "sdk", "ai", "agents", "pipelines"]
+keywords = ["strot", "ai", "agents", "pipelines"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -23,17 +23,8 @@ packages = [
 python = ">=3.9,<4.0"
 requests = ">=2.28"
 pyyaml = ">=6.0"
-
-[tool.poetry.extras]
-pandas = ["pandas"]
-cli = ["click", "rich"]
-
-[tool.poetry.group.cli.dependencies]
 click = ">=8.0"
 rich = ">=13.0"
-
-[tool.poetry.group.pandas.dependencies]
-pandas = ">=1.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.0"
