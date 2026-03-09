@@ -1,5 +1,9 @@
 # STROT
 
+[![PyPI](https://img.shields.io/pypi/v/strot-ai)](https://pypi.org/project/strot-ai/)
+[![Python](https://img.shields.io/pypi/pyversions/strot-ai)](https://pypi.org/project/strot-ai/)
+[![License](https://img.shields.io/pypi/l/strot-ai)](LICENSE)
+
 Build tools, agents, pipelines, and dashboards for your [STROT](https://strot.ai) instance — in Python.
 
 ## Installation
