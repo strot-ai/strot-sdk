@@ -58,7 +58,7 @@ def test(mock, params):
         spec.loader.exec_module(module)
 
         # Find decorated classes
-        from strot_sdk.decorators import get_registry
+        from strot_ai.decorators import get_registry
         registry = get_registry()
 
         target_type = config["type"]
@@ -168,7 +168,7 @@ def _test_agent(cls, cfg):
 def _test_cortex(cls, cfg):
     """Test a @cortex decorated class by compiling its pipeline DSL."""
     import json
-    from strot_sdk.cortex import build_pipeline
+    from strot_ai.cortex import build_pipeline
 
     console.print(f"[dim]Compiling pipeline...[/dim]")
 
@@ -212,7 +212,7 @@ def _test_cortex(cls, cfg):
 def _test_page(cls, cfg):
     """Test a @page decorated class by compiling its layout."""
     import json
-    from strot_sdk.pages import build_page
+    from strot_ai.pages import build_page
 
     console.print(f"[dim]Compiling page layout...[/dim]")
 

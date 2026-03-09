@@ -1,13 +1,13 @@
-"""Tests for strot_sdk.destinations."""
+"""Tests for strot_ai.destinations."""
 import pytest
 import responses
-from strot_sdk.destinations import EmailDestination, SlackDestination, WebhookDestination
+from strot_ai.destinations import EmailDestination, SlackDestination, WebhookDestination
 
 
 def _make_destination(cls, clean_env):
     """Create a destination with an injected test client."""
     inst = cls()
-    from strot_sdk.client import StrotClient
+    from strot_ai.client import StrotClient
     inst._client = StrotClient(
         url="https://test.strot.ai", api_key="sk_test", max_retries=0,
     )

@@ -15,7 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 packages = [
-    { include = "strot_sdk", from = "src" },
+    { include = "strot_ai", from = "src" },
     { include = "strot_cli", from = "src" },
 ]
 

@@ -189,7 +189,7 @@ class StrotRegistry:
     Main registry providing typed access to STROT resources.
 
     Usage:
-        from strot_sdk import strot
+        from strot_ai import strot
 
         # Access queries
         q = strot.queries['monthly_sales']

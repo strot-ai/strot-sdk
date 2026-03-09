@@ -1,10 +1,10 @@
-"""Tests for strot_sdk.config."""
+"""Tests for strot_ai.config."""
 import os
 import stat
 import pytest
 import yaml
 from pathlib import Path
-from strot_sdk.config import StrotConfig, _load_yaml, _save_yaml
+from strot_ai.config import StrotConfig, _load_yaml, _save_yaml
 
 
 class TestConfigPriorityChain:
@@ -72,7 +72,7 @@ class TestProfileManagement:
     def test_save_and_load_profile(self, tmp_path, monkeypatch):
         creds_file = tmp_path / ".strot" / "credentials"
         # Patch the default path
-        import strot_sdk.config as config_mod
+        import strot_ai.config as config_mod
         monkeypatch.setattr(config_mod, "DEFAULT_CREDENTIALS_FILE", creds_file)
 
         StrotConfig.save_profile(
@@ -91,7 +91,7 @@ class TestProfileManagement:
 
     def test_delete_profile(self, tmp_path, monkeypatch):
         creds_file = tmp_path / ".strot" / "credentials"
-        import strot_sdk.config as config_mod
+        import strot_ai.config as config_mod
         monkeypatch.setattr(config_mod, "DEFAULT_CREDENTIALS_FILE", creds_file)
 
         StrotConfig.save_profile(profile="todelete", url="https://x.ai", api_key="sk_x")
@@ -100,13 +100,13 @@ class TestProfileManagement:
 
     def test_delete_nonexistent_profile(self, tmp_path, monkeypatch):
         creds_file = tmp_path / ".strot" / "credentials"
-        import strot_sdk.config as config_mod
+        import strot_ai.config as config_mod
         monkeypatch.setattr(config_mod, "DEFAULT_CREDENTIALS_FILE", creds_file)
         assert StrotConfig.delete_profile("nope") is False
 
     def test_current_profile_tracking(self, tmp_path, monkeypatch):
         creds_file = tmp_path / ".strot" / "credentials"
-        import strot_sdk.config as config_mod
+        import strot_ai.config as config_mod
         monkeypatch.setattr(config_mod, "DEFAULT_CREDENTIALS_FILE", creds_file)
 
         StrotConfig.save_profile(profile="prod", url="https://prod.ai", api_key="sk_prod")

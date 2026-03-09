@@ -23,7 +23,7 @@ strot deploy                        # Ship to your STROT instance
 ### Tools (`@function`)
 
 ```python
-from strot_sdk import function, llm
+from strot_ai import function, llm
 
 @function(
     name='calculate_roi',
@@ -43,7 +43,7 @@ class CalculateROI:
 ### Agents (`@agent`)
 
 ```python
-from strot_sdk import agent
+from strot_ai import agent
 
 @agent(
     name='sales_analyst',
@@ -60,8 +60,8 @@ class SalesAnalyst:
 ### Cortex Pipelines (`@cortex`)
 
 ```python
-from strot_sdk import cortex
-from strot_sdk.cortex import Flow
+from strot_ai import cortex
+from strot_ai.cortex import Flow
 
 @cortex(name='daily_etl', description='Daily ETL pipeline')
 class DailyETL:
@@ -74,8 +74,8 @@ class DailyETL:
 ### Pages / Dashboards (`@page`)
 
 ```python
-from strot_sdk import page
-from strot_sdk.pages import Dashboard, Row, KPI, Chart, Table
+from strot_ai import page
+from strot_ai.pages import Dashboard, Row, KPI, Chart, Table
 
 @page(name='sales_dashboard', description='Sales overview', type='dashboard')
 class SalesDashboard:
@@ -101,7 +101,7 @@ class SalesDashboard:
 All LLM calls go through your STROT instance — no API keys needed in your code.
 
 ```python
-from strot_sdk import llm
+from strot_ai import llm
 
 result = llm.complete("Summarize this: " + text)
 result = llm.chat([{"role": "user", "content": "What is 2+2?"}])
@@ -112,7 +112,7 @@ data = llm.extract("John is 30 years old", {"name": "string", "age": "number"})
 ### Data Access
 
 ```python
-from strot_sdk import strot, query, query_one
+from strot_ai import strot, query, query_one
 
 rows = strot.queries['monthly_sales'].execute()
 rows = query("SELECT * FROM users", data_source_id=1)
@@ -122,7 +122,7 @@ row = query_one("SELECT * FROM users WHERE id = 1", data_source_id=1)
 ### Destinations
 
 ```python
-from strot_sdk import email, slack, webhook
+from strot_ai import email, slack, webhook
 
 email.send(to="team@example.com", subject="Report Ready", body="Done.")
 slack.send(channel="#alerts", message="New alert!")

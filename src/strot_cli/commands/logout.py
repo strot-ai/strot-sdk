@@ -10,7 +10,7 @@ console = Console()
 @click.option("--all", "clear_all", is_flag=True, help="Remove all profiles")
 def logout(profile, clear_all):
     """Clear stored credentials."""
-    from strot_sdk.config import StrotConfig, DEFAULT_CREDENTIALS_FILE
+    from strot_ai.config import StrotConfig, DEFAULT_CREDENTIALS_FILE
 
     if clear_all:
         if DEFAULT_CREDENTIALS_FILE.exists():

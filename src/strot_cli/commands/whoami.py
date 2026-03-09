@@ -9,7 +9,7 @@ console = Console()
 @click.command()
 def whoami():
     """Show current user, organization, and instance info."""
-    from strot_sdk.config import StrotConfig
+    from strot_ai.config import StrotConfig
 
     config = StrotConfig()
     if not config.is_configured:
@@ -27,7 +27,7 @@ def whoami():
 
     # Try to get live user info from the org-scoped API
     try:
-        from strot_sdk.client import StrotClient
+        from strot_ai.client import StrotClient
         client = StrotClient()
         user_info = client.whoami()
         table.add_row("Email", user_info.get("email", ""))

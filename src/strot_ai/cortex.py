@@ -5,8 +5,8 @@ Build Cortex pipelines in Python. The pipeline compiles to JSON DSL
 that gets deployed to your STROT instance.
 
 Usage:
-    from strot_sdk import cortex
-    from strot_sdk.cortex import Flow
+    from strot_ai import cortex
+    from strot_ai.cortex import Flow
 
     @cortex(name='daily_etl', description='Daily ETL pipeline', schedule='0 8 * * *')
     class DailyETL:

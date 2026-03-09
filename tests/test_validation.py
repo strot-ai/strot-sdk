@@ -1,6 +1,6 @@
-"""Tests for strot_sdk.validation."""
+"""Tests for strot_ai.validation."""
 import pytest
-from strot_sdk.validation import validate_pipeline_dsl, validate_page_layout, validate_or_raise
+from strot_ai.validation import validate_pipeline_dsl, validate_page_layout, validate_or_raise
 
 
 class TestValidatePipelineDSL:

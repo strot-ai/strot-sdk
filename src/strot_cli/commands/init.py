@@ -11,7 +11,7 @@ TEMPLATES = {
         "language": "python",
         "files": {
             "main.py": '''\
-from strot_sdk import function, llm, strot
+from strot_ai import function, llm, strot
 
 @function(
     name='{name}',
@@ -47,7 +47,7 @@ A STROT tool that can be deployed to your STROT instance and used by AI agents.
 
 ### Imports (ONLY use these)
 ```python
-from strot_sdk import function, agent, llm, strot, query, email, slack, webhook
+from strot_ai import function, agent, llm, strot, query, email, slack, webhook
 ```
 
 ### @function decorator
@@ -93,7 +93,7 @@ webhook.post(url="https://api.example.com/hook", data={{"key": "value"}})
 ## Rules
 - Use `def run(self, ...)` — NOT `async def`
 - Do NOT use `await`
-- Do NOT import litellm, openai, or anthropic directly — use `llm` from strot_sdk
+- Do NOT import litellm, openai, or anthropic directly — use `llm` from strot_ai
 - Parameters must be a list of dicts with name, type, description
 - Only use data from `strot.queries` and `strot.dataSources`
 
@@ -114,7 +114,7 @@ strot deploy        # Deploy to your STROT instance
         "language": "python",
         "files": {
             "main.py": '''\
-from strot_sdk import agent, llm, strot
+from strot_ai import agent, llm, strot
 
 @agent(
     name='{name}',
@@ -190,8 +190,8 @@ strot deploy
         "language": "python",
         "files": {
             "main.py": '''\
-from strot_sdk import cortex
-from strot_sdk.cortex import Flow
+from strot_ai import cortex
+from strot_ai.cortex import Flow
 
 @cortex(
     name='{name}',
@@ -228,8 +228,8 @@ The pipeline compiles to JSON DSL and gets deployed to your STROT instance.
 
 ### @cortex decorator
 ```python
-from strot_sdk import cortex
-from strot_sdk.cortex import Flow
+from strot_ai import cortex
+from strot_ai.cortex import Flow
 
 @cortex(name='my_pipeline', description='What it does')
 class MyPipeline:
@@ -321,8 +321,8 @@ strot deploy --dry-run  # Validate without deploying
         "language": "python",
         "files": {
             "main.py": '''\
-from strot_sdk import page
-from strot_sdk.pages import Dashboard, Row, KPI, Chart, Table
+from strot_ai import page
+from strot_ai.pages import Dashboard, Row, KPI, Chart, Table
 
 @page(
     name='{name}',
@@ -367,8 +367,8 @@ The layout compiles to JSON and gets deployed to your STROT instance.
 
 ### @page decorator
 ```python
-from strot_sdk import page
-from strot_sdk.pages import Dashboard, Row, KPI, Chart, Table, Text
+from strot_ai import page
+from strot_ai.pages import Dashboard, Row, KPI, Chart, Table, Text
 
 @page(name='my_dashboard', description='Sales overview', type='dashboard')
 class MyDashboard:

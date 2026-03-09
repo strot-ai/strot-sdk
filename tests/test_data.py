@@ -1,14 +1,14 @@
-"""Tests for strot_sdk.data."""
+"""Tests for strot_ai.data."""
 import pytest
 import responses
-from strot_sdk.data import query, query_one, execute_saved_query
+from strot_ai.data import query, query_one, execute_saved_query
 
 
 @pytest.fixture(autouse=True)
 def inject_test_client(clean_env):
     """Inject a test client into the data module."""
-    import strot_sdk.data as data_mod
-    from strot_sdk.client import StrotClient
+    import strot_ai.data as data_mod
+    from strot_ai.client import StrotClient
     data_mod._client = StrotClient(
         url="https://test.strot.ai", api_key="sk_test", max_retries=0,
     )

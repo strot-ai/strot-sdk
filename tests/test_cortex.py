@@ -1,7 +1,7 @@
-"""Tests for strot_sdk.cortex."""
+"""Tests for strot_ai.cortex."""
 import json
-from strot_sdk.cortex import Flow, Node, Edge, Step, build_pipeline
-from strot_sdk.decorators import cortex
+from strot_ai.cortex import Flow, Node, Edge, Step, build_pipeline
+from strot_ai.decorators import cortex
 
 
 class TestNode:

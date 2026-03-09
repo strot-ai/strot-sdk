@@ -1,10 +1,10 @@
-"""Tests for strot_sdk.pages."""
+"""Tests for strot_ai.pages."""
 import json
-from strot_sdk.pages import (
+from strot_ai.pages import (
     Block, KPI, Chart, Table, Text, StatGrid, ProgressList,
     Row, Dashboard, build_page,
 )
-from strot_sdk.decorators import page
+from strot_ai.decorators import page
 
 
 class TestKPI:

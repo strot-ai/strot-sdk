@@ -60,7 +60,7 @@ def _deploy_function(root, config, dry_run):
         return
 
     try:
-        from strot_sdk.client import StrotClient
+        from strot_ai.client import StrotClient
         client = StrotClient()
 
         result = client.deploy_function(
@@ -132,7 +132,7 @@ def _deploy_compiled(root, config, dry_run):
             return
 
         # Deploy to STROT instance
-        from strot_sdk.client import StrotClient
+        from strot_ai.client import StrotClient
         client = StrotClient()
 
         if project_type == "cortex":
@@ -172,8 +172,8 @@ def _deploy_compiled(root, config, dry_run):
 
 def _compile_cortex(module, config):
     """Compile a @cortex decorated class to DSL."""
-    from strot_sdk.decorators import get_registry
-    from strot_sdk.cortex import build_pipeline
+    from strot_ai.decorators import get_registry
+    from strot_ai.cortex import build_pipeline
 
     registry = get_registry()
     cortex_items = registry.get("cortex", {})
@@ -197,8 +197,8 @@ def _compile_cortex(module, config):
 
 def _compile_page(module, config):
     """Compile a @page decorated class to layout JSON."""
-    from strot_sdk.decorators import get_registry
-    from strot_sdk.pages import build_page
+    from strot_ai.decorators import get_registry
+    from strot_ai.pages import build_page
 
     registry = get_registry()
     page_items = registry.get("page", {})

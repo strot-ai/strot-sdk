@@ -13,7 +13,7 @@ def resources(resource_type):
 
     RESOURCE_TYPE can be: queries, datasources, tools, or omit for all.
     """
-    from strot_sdk.client import StrotClient
+    from strot_ai.client import StrotClient
 
     try:
         client = StrotClient()

@@ -1,14 +1,14 @@
-"""Tests for strot_sdk.ai."""
+"""Tests for strot_ai.ai."""
 import pytest
 import responses
-from strot_sdk.ai import LLM, MODELS
+from strot_ai.ai import LLM, MODELS
 
 
 @pytest.fixture
 def llm_instance(clean_env):
     inst = LLM(model="default", temperature=0.1)
     # Inject a test client
-    from strot_sdk.client import StrotClient
+    from strot_ai.client import StrotClient
     inst._client = StrotClient(
         url="https://test.strot.ai", api_key="sk_test", max_retries=0,
     )

@@ -1,7 +1,7 @@
-"""Tests for strot_sdk.registry."""
+"""Tests for strot_ai.registry."""
 import pytest
 import responses
-from strot_sdk.registry import (
+from strot_ai.registry import (
     StrotRegistry, EntityCollection, QueryProxy, ToolProxy, DataSourceProxy,
 )
 

@@ -8,7 +8,7 @@ Decorators for registering code as different STROT entities:
 - @page: Register as a Pages dashboard/app
 
 Usage:
-    from strot_sdk import function, agent
+    from strot_ai import function, agent
 
     @function(name='calculate_roi', category='finance')
     class CalculateROI:

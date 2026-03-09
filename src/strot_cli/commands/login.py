@@ -26,7 +26,7 @@ def login(instance, org, token, profile):
 
       strot login --token sk_live_abc123              # Direct API key
     """
-    from strot_sdk.config import StrotConfig
+    from strot_ai.config import StrotConfig
 
     # Collect instance + org
     if not instance:
@@ -67,11 +67,11 @@ def login(instance, org, token, profile):
 
 def _validate_and_save(instance: str, org: str, api_key: str, profile: str):
     """Validate API key against the instance and save credentials."""
-    from strot_sdk.config import StrotConfig
+    from strot_ai.config import StrotConfig
 
     console.print(f"[dim]Validating...[/dim]")
     try:
-        from strot_sdk.client import StrotClient
+        from strot_ai.client import StrotClient
         client = StrotClient(url=instance, api_key=api_key, org=org)
         user_info = client.whoami()
         user_email = user_info.get("email", "")

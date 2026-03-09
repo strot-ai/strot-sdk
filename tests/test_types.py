@@ -1,5 +1,5 @@
-"""Tests for strot_sdk.types."""
-from strot_sdk.types import ExecutionResult, QueryResult, DeployResult, Resource
+"""Tests for strot_ai.types."""
+from strot_ai.types import ExecutionResult, QueryResult, DeployResult, Resource
 
 
 class TestExecutionResult:

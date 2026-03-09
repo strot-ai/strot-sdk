@@ -5,8 +5,8 @@ Build dashboards and pages in Python. The layout compiles to JSON
 that gets deployed to your STROT instance.
 
 Usage:
-    from strot_sdk import page
-    from strot_sdk.pages import Dashboard, Row, KPI, Chart, Table, Text
+    from strot_ai import page
+    from strot_ai.pages import Dashboard, Row, KPI, Chart, Table, Text
 
     @page(name='sales_dashboard', type='dashboard')
     class SalesDashboard:

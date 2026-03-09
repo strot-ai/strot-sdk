@@ -7,7 +7,7 @@ import yaml
 @pytest.fixture(autouse=True)
 def clean_registry():
     """Clear the decorator registry between tests."""
-    from strot_sdk.decorators import _REGISTRY
+    from strot_ai.decorators import _REGISTRY
     for key in _REGISTRY:
         _REGISTRY[key].clear()
     yield
@@ -18,7 +18,7 @@ def clean_registry():
 @pytest.fixture(autouse=True)
 def clean_data_client():
     """Reset the data module's cached client between tests."""
-    import strot_sdk.data as data_mod
+    import strot_ai.data as data_mod
     data_mod._client = None
     yield
     data_mod._client = None

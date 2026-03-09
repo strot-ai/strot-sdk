@@ -1,8 +1,8 @@
-"""Tests for strot_sdk.client."""
+"""Tests for strot_ai.client."""
 import pytest
 import responses
 from unittest.mock import patch
-from strot_sdk.client import StrotClient, StrotAPIError
+from strot_ai.client import StrotClient, StrotAPIError
 
 
 @pytest.fixture

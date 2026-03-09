@@ -29,7 +29,7 @@ class LLM:
     All calls go through the STROT API proxy — no direct LLM API keys needed.
 
     Usage:
-        from strot_sdk import llm
+        from strot_ai import llm
 
         result = llm.complete("Summarize this text: " + text)
         result = llm("What is 2+2?")  # shorthand

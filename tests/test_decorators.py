@@ -1,5 +1,5 @@
-"""Tests for strot_sdk.decorators."""
-from strot_sdk.decorators import (
+"""Tests for strot_ai.decorators."""
+from strot_ai.decorators import (
     function, agent, cortex, page,
     get_registry, get_functions, get_agents, get_cortex_nodes, get_pages,
     FunctionConfig, AgentConfig, CortexConfig, PageConfig,

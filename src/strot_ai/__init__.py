@@ -2,7 +2,7 @@
 STROT SDK — Build tools, agents, pipelines, and dashboards in Python.
 
 Usage:
-    from strot_sdk import function, agent, cortex, page, strot, llm
+    from strot_ai import function, agent, cortex, page, strot, llm
 
     # Tool
     @function(name='calculate_roi', category='finance')
@@ -16,7 +16,7 @@ Usage:
         system_prompt = "You are a financial analyst."
 
     # Cortex Pipeline
-    from strot_sdk.cortex import Flow
+    from strot_ai.cortex import Flow
     @cortex(name='daily_etl', description='Daily ETL')
     class DailyETL:
         def build(self, flow: Flow):
@@ -25,7 +25,7 @@ Usage:
             flow.publish(cleaned, name='report', destination='slack')
 
     # Page / Dashboard
-    from strot_sdk.pages import Dashboard, Row, KPI, Chart, Table
+    from strot_ai.pages import Dashboard, Row, KPI, Chart, Table
     @page(name='sales_dashboard', type='dashboard')
     class SalesDashboard:
         def layout(self):
