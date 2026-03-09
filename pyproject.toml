@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "strot-ai"
-version = "0.1.1"
+version = "0.1.2"
 description = "Build tools, agents, and pipelines for your STROT instance"
 authors = ["STROT AI <dev@strot.ai>"]
 license = "MIT"
