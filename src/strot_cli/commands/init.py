@@ -121,7 +121,6 @@ from strot_ai import agent, llm, strot
     description='{description}',
     category='{category}',
     tools=[],
-    model='gpt-4o-mini',
     temperature=0.1,
     max_iterations=10,
 )
@@ -161,7 +160,6 @@ by the chatbot for specialized tasks.
     description='What the agent does',
     category='analytics',
     tools=['tool_name1', 'tool_name2'],
-    model='gpt-4o-mini',
     temperature=0.1,
     max_iterations=10,
     can_handoff_to=['other_agent'],

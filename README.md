@@ -53,7 +53,6 @@ from strot_ai import agent
     name='sales_analyst',
     description='Analyzes sales data and provides insights',
     tools=['calculate_roi', 'top_n'],
-    model='gpt-4o',
     temperature=0.1,
 )
 class SalesAnalyst:

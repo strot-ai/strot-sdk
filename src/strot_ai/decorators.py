@@ -78,7 +78,6 @@ class AgentConfig:
     description: str = ''
     category: str = 'custom'
     tools: List[str] = field(default_factory=list)
-    model: str = 'gpt-4o-mini'
     temperature: float = 0.1
     max_iterations: int = 10
     can_handoff_to: List[str] = field(default_factory=list)
@@ -157,7 +156,6 @@ def agent(
     description: str = '',
     category: str = 'custom',
     tools: Optional[List[str]] = None,
-    model: str = 'gpt-4o-mini',
     temperature: float = 0.1,
     max_iterations: int = 10,
     can_handoff_to: Optional[List[str]] = None,
@@ -168,7 +166,7 @@ def agent(
         system_prompt = getattr(cls, 'system_prompt', '') or cls.__doc__ or ''
         config = AgentConfig(
             name=name, description=description, category=category,
-            tools=tools or [], model=model, temperature=temperature,
+            tools=tools or [], temperature=temperature,
             max_iterations=max_iterations,
             can_handoff_to=can_handoff_to or [],
             approval_required=approval_required,
