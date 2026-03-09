@@ -5,7 +5,7 @@ Build tools, agents, pipelines, and dashboards for your [STROT](https://strot.ai
 ## Installation
 
 ```bash
-pip install strot
+pip install strot-ai
 ```
 
 ## Quick Start
