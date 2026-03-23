@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/pypi/pyversions/strot-ai)](https://pypi.org/project/strot-ai/)
 [![License](https://img.shields.io/pypi/l/strot-ai)](LICENSE)
 
-Build tools, agents, pipelines, and dashboards for your [STROT](https://strot.ai) instance — in Python.
+Build tools, agents, skills, pipelines, and dashboards for your [STROT](https://strot.ai) instance — in Python.
 
 ## Installation
 
@@ -22,9 +22,19 @@ strot test                          # Validate locally
 strot deploy                        # Ship to your STROT instance
 ```
 
-## SDK Reference
+## What You Can Build
 
-### Tools (`@function`)
+| Type | Decorator | Description |
+|------|-----------|-------------|
+| **Tool** | `@function` | Reusable AI-callable functions (e.g., calculate ROI, parse CSV) |
+| **Agent** | `@agent` | AI agents with system prompts and tool access |
+| **Skill** | `@skill` | Multi-step AI workflows defined as markdown prompts |
+| **Pipeline** | `@cortex` | Data pipelines with LLM transforms, routing, and publishing |
+| **Dashboard** | `@page` | Interactive dashboards with KPIs, charts, and tables |
+
+## Examples
+
+### Tool
 
 ```python
 from strot_ai import function, llm
@@ -44,7 +54,7 @@ class CalculateROI:
         return ((revenue - cost) / cost) * 100
 ```
 
-### Agents (`@agent`)
+### Agent
 
 ```python
 from strot_ai import agent
@@ -60,7 +70,36 @@ class SalesAnalyst:
     Analyze data and provide actionable recommendations."""
 ```
 
-### Cortex Pipelines (`@cortex`)
+### Skill
+
+```python
+from strot_ai import skill
+
+@skill(
+    name='dashboard_builder',
+    description='Build interactive dashboards from queries',
+    tools=['query_info', 'create_app', 'update_app', 'deploy_app'],
+    trigger='build.*dashboard|create.*dashboard',
+    emoji='📊',
+    examples=['Build a dashboard from query 4'],
+)
+class DashboardBuilder:
+    """## Workflow
+
+    ### Step 1: Analyze Data
+    Call `query_info` with the query_id to fetch schema and sample data.
+    Ask: "Does this data look right?"
+
+    ### Step 2: Map Data
+    Plan how columns map to dashboard sections.
+    Ask: "Does this mapping look good?"
+
+    ### Step 3: Build
+    Call `create_app` with the app_spec.
+    """
+```
+
+### Pipeline
 
 ```python
 from strot_ai import cortex
@@ -74,7 +113,7 @@ class DailyETL:
         flow.publish(cleaned, name='daily_report', destination='slack', channel='#data')
 ```
 
-### Pages / Dashboards (`@page`)
+### Dashboard
 
 ```python
 from strot_ai import page
@@ -99,39 +138,6 @@ class SalesDashboard:
         )
 ```
 
-### LLM
-
-All LLM calls go through your STROT instance — no API keys needed in your code.
-
-```python
-from strot_ai import llm
-
-result = llm.complete("Summarize this: " + text)
-result = llm.chat([{"role": "user", "content": "What is 2+2?"}])
-category = llm.classify("Great product!", ["positive", "negative", "neutral"])
-data = llm.extract("John is 30 years old", {"name": "string", "age": "number"})
-```
-
-### Data Access
-
-```python
-from strot_ai import strot, query, query_one
-
-rows = strot.queries['monthly_sales'].execute()
-rows = query("SELECT * FROM users", data_source_id=1)
-row = query_one("SELECT * FROM users WHERE id = 1", data_source_id=1)
-```
-
-### Destinations
-
-```python
-from strot_ai import email, slack, webhook
-
-email.send(to="team@example.com", subject="Report Ready", body="Done.")
-slack.send(channel="#alerts", message="New alert!")
-webhook.post(url="https://api.example.com/hook", data={"event": "deploy"})
-```
-
 ## CLI Reference
 
 ```bash
@@ -142,6 +148,7 @@ strot logout                             # Clear credentials
 
 strot init tool my-calculator            # Scaffold tool
 strot init agent my-analyst              # Scaffold agent
+strot init skill my-workflow             # Scaffold skill
 strot init cortex my-pipeline            # Scaffold pipeline
 strot init page my-dashboard             # Scaffold dashboard
 
@@ -153,6 +160,10 @@ strot resources                          # List all resources
 strot resources queries                  # List saved queries
 strot resources datasources              # List data sources
 ```
+
+## Documentation
+
+See [docs/guide.md](docs/guide.md) for the full SDK guide covering all decorators, built-in modules, configuration, and advanced patterns.
 
 ## Configuration
 
