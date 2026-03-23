@@ -6,9 +6,10 @@ Decorators for registering code as different STROT entities:
 - @agent: Register as an AI agent
 - @cortex: Register as a Cortex pipeline node
 - @page: Register as a Pages dashboard/app
+- @skill: Register as an Arena skill (AI workflow with tool access)
 
 Usage:
-    from strot_ai import function, agent
+    from strot_ai import function, agent, skill
 
     @function(name='calculate_roi', category='finance')
     class CalculateROI:
@@ -22,6 +23,19 @@ Usage:
     )
     class SalesAnalyst:
         system_prompt = '''You are a Sales Analyst.'''
+
+    @skill(
+        name='dashboard_builder',
+        description='Build dashboards from queries',
+        tools=['query_info', 'create_app', 'deploy_app'],
+        trigger='build.*dashboard|create.*dashboard',
+        emoji='📊',
+    )
+    class DashboardBuilder:
+        '''## Workflow
+        ### Step 1: Analyze Data
+        Call query_info to fetch schema and sample data.
+        '''
 """
 import logging
 from typing import Any, Dict, List, Optional, Type
@@ -35,6 +49,7 @@ _REGISTRY = {
     'page': {},
     'function': {},
     'agent': {},
+    'skill': {},
 }
 
 
@@ -83,6 +98,24 @@ class AgentConfig:
     can_handoff_to: List[str] = field(default_factory=list)
     approval_required: bool = False
     system_prompt: str = ''
+
+
+@dataclass
+class SkillConfig:
+    """Configuration for @skill decorated classes.
+
+    Skills are AI workflows defined as markdown prompts with tool access.
+    The class docstring becomes the skill prompt.
+    """
+    name: str
+    description: str = ''
+    category: str = 'custom'
+    tools: List[str] = field(default_factory=list)
+    trigger: str = ''
+    emoji: str = ''
+    examples: List[str] = field(default_factory=list)
+    icon: str = ''
+    prompt: str = ''
 
 
 def cortex(
@@ -180,6 +213,53 @@ def agent(
     return decorator
 
 
+def skill(
+    name: str,
+    description: str = '',
+    category: str = 'custom',
+    tools: Optional[List[str]] = None,
+    trigger: str = '',
+    emoji: str = '',
+    examples: Optional[List[str]] = None,
+    icon: str = '',
+):
+    """Register a class as an Arena Skill.
+
+    Skills are AI workflows defined as markdown prompts with tool access.
+    The class docstring (or `prompt` class attribute) becomes the skill prompt
+    that guides the AI through a multi-step workflow.
+
+    Example:
+        @skill(
+            name='dashboard_builder',
+            description='Build dashboards from queries',
+            tools=['query_info', 'create_app', 'deploy_app'],
+            trigger='build.*dashboard|create.*dashboard',
+            emoji='📊',
+            examples=['Build a dashboard from query 4'],
+        )
+        class DashboardBuilder:
+            '''## Workflow
+            ### Step 1: Analyze Data
+            Call query_info to fetch schema and sample data.
+            '''
+    """
+    def decorator(cls: Type) -> Type:
+        prompt_text = getattr(cls, 'prompt', '') or cls.__doc__ or ''
+        config = SkillConfig(
+            name=name, description=description, category=category,
+            tools=tools or [], trigger=trigger, emoji=emoji,
+            examples=examples or [], icon=icon,
+            prompt=prompt_text.strip(),
+        )
+        cls._strot_config = config
+        cls._strot_type = 'skill'
+        _REGISTRY['skill'][name] = {'class': cls, 'config': config}
+        logger.info(f"Registered Skill: {name} (tools={len(tools or [])}, trigger={trigger!r})")
+        return cls
+    return decorator
+
+
 # Registry access
 def get_registry() -> Dict[str, Dict[str, Any]]:
     """Get the full decorator registry."""
@@ -196,3 +276,6 @@ def get_cortex_nodes() -> Dict[str, Any]:
 
 def get_pages() -> Dict[str, Any]:
     return _REGISTRY['page']
+
+def get_skills() -> Dict[str, Any]:
+    return _REGISTRY['skill']

@@ -1,8 +1,8 @@
 """
-STROT SDK — Build tools, agents, pipelines, and dashboards in Python.
+STROT SDK — Build tools, agents, skills, pipelines, and dashboards in Python.
 
 Usage:
-    from strot_ai import function, agent, cortex, page, strot, llm
+    from strot_ai import function, agent, skill, cortex, page, strot, llm
 
     # Tool
     @function(name='calculate_roi', category='finance')
@@ -35,6 +35,20 @@ Usage:
                 Row(Table(query_id=3, title='Top Customers')),
             )
 
+    # Skill (AI workflow with tool access)
+    @skill(
+        name='data_analyzer',
+        description='Analyze query data',
+        tools=['query_info'],
+        trigger='analyze.*data',
+        emoji='🔍',
+    )
+    class DataAnalyzer:
+        '''## Workflow
+        ### Step 1: Fetch data with query_info
+        ### Step 2: Present analysis
+        '''
+
     # LLM
     result = llm.complete("Summarize this text: " + text)
 
@@ -48,7 +62,7 @@ Usage:
 __version__ = "0.1.0"
 
 # Decorators
-from .decorators import function, agent, cortex, page
+from .decorators import function, agent, cortex, page, skill
 
 # Registry
 from .registry import strot, StrotRegistry
@@ -73,7 +87,7 @@ from .types import ExecutionResult, QueryResult, DeployResult, Resource
 
 __all__ = [
     # Decorators
-    "function", "agent", "cortex", "page",
+    "function", "agent", "cortex", "page", "skill",
     # Registry
     "strot", "StrotRegistry",
     # AI

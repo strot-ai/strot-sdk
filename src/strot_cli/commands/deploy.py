@@ -25,7 +25,9 @@ def deploy(dry_run):
 
     console.print(f"[bold]Deploying:[/bold] {config['name']} ({project_type})")
 
-    if project_type in ("cortex", "page"):
+    if project_type == "skill":
+        _deploy_skill(root, config, dry_run)
+    elif project_type in ("cortex", "page"):
         _deploy_compiled(root, config, dry_run)
     else:
         _deploy_function(root, config, dry_run)
@@ -92,6 +94,91 @@ def _deploy_function(root, config, dry_run):
     except Exception as e:
         console.print(f"[red]Deploy failed:[/red] {e}")
         raise SystemExit(1)
+
+
+def _deploy_skill(root, config, dry_run):
+    """Deploy a skill (compiled from @skill decorator to Arena skill)."""
+    import sys
+    import importlib.util
+
+    entry = config["entry"]
+    entry_file = root / entry
+
+    if not entry_file.exists():
+        console.print(f"[red]Entry file '{entry}' not found.[/red]")
+        raise SystemExit(1)
+
+    # Import the entry module to find the @skill decorated class
+    sys.path.insert(0, str(root))
+    try:
+        spec = importlib.util.spec_from_file_location("__strot_deploy__", entry_file)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        from strot_ai.decorators import get_skills
+        skills = get_skills()
+
+        if not skills:
+            raise ValueError("No @skill decorated class found in entry file.")
+
+        # Use the matching or first skill
+        target_name = config["name"]
+        skill_entry = None
+        for name, entry_data in skills.items():
+            if name == target_name:
+                skill_entry = entry_data
+                break
+        if skill_entry is None:
+            skill_entry = next(iter(skills.values()))
+
+        skill_config = skill_entry["config"]
+
+        if dry_run:
+            console.print()
+            console.print("[green]Dry run passed.[/green] Skill is valid for deployment.")
+            console.print(f"  Name: {skill_config.name}")
+            console.print(f"  Description: {skill_config.description}")
+            console.print(f"  Tools: {', '.join(skill_config.tools)}")
+            console.print(f"  Trigger: {skill_config.trigger}")
+            console.print(f"  Emoji: {skill_config.emoji}")
+            console.print(f"  Prompt: {len(skill_config.prompt)} chars")
+            return
+
+        from strot_ai.client import StrotClient
+        client = StrotClient()
+
+        result = client.deploy_skill(
+            name=skill_config.name,
+            prompt=skill_config.prompt,
+            description=skill_config.description or config.get("description", ""),
+            category=skill_config.category,
+            tools=skill_config.tools,
+            trigger=skill_config.trigger,
+            emoji=skill_config.emoji,
+            icon=skill_config.icon,
+            examples=skill_config.examples,
+        )
+
+        if result.success:
+            console.print()
+            console.print(f"[green]Deployed successfully![/green] ({result.action})")
+            if result.url:
+                console.print(f"[dim]URL: {result.url}[/dim]")
+            if result.id:
+                console.print(f"[dim]ID: {result.id}[/dim]")
+        else:
+            console.print(f"[red]Deploy failed:[/red] {result.error}")
+            raise SystemExit(1)
+
+    except SystemExit:
+        raise
+    except Exception as e:
+        console.print(f"[red]Deploy failed:[/red] {e}")
+        import traceback
+        traceback.print_exc()
+        raise SystemExit(1)
+    finally:
+        sys.path.pop(0)
 
 
 def _deploy_compiled(root, config, dry_run):

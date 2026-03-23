@@ -446,6 +446,141 @@ strot deploy --dry-run  # Validate without deploying
 ''',
         },
     },
+    "skill": {
+        "language": "python",
+        "files": {
+            "main.py": '''\
+from strot_ai import skill
+
+@skill(
+    name='{name}',
+    description='{description}',
+    tools=['query_info'],
+    trigger='{name}',
+    emoji='🔧',
+    examples=[
+        'Run {name}',
+    ],
+)
+class {class_name}:
+    """# {class_name} Skill
+
+## Workflow
+
+Follow these steps IN ORDER. Do ONE step per turn, then STOP and wait for user input.
+
+### Step 1: Understand the Request
+Clarify what the user needs. Ask questions if the request is ambiguous.
+
+### Step 2: Gather Data
+Call `query_info` with the query_id to fetch schema, columns, and sample data.
+Present the results clearly.
+Ask: "Does this look right?"
+
+### Step 3: Execute
+Perform the main task using the available tools.
+
+### Step 4: Review
+Present the results and ask for feedback.
+
+## Rules
+1. ALWAYS call query_info first to understand the data.
+2. Do ONE step per turn, then STOP and wait.
+3. If the user says "yes" or "go ahead" — proceed to the NEXT step.
+"""
+''',
+            "strot.yaml": '''\
+name: {name}
+type: skill
+language: python
+version: "1.0.0"
+description: "{description}"
+category: {category}
+entry: main.py
+''',
+            "CLAUDE.md": '''\
+# {name} — STROT Skill
+
+## What this is
+A STROT Arena skill — an AI workflow defined as a markdown prompt with tool access.
+Skills guide the AI through multi-step processes using Arena tools.
+
+## SDK Reference
+
+### @skill decorator
+```python
+from strot_ai import skill
+
+@skill(
+    name='my_skill',
+    description='What the skill does',
+    tools=['query_info', 'create_app'],     # Arena tools this skill can use
+    trigger='regex.*pattern',               # Auto-route user messages to this skill
+    emoji='🔧',                             # Displayed in chat UI
+    examples=['Example prompt 1'],          # Shown as suggestions
+    icon='layout-dashboard',                # Tabler icon name (optional)
+)
+class MySkill:
+    """# My Skill
+
+    ## Workflow
+    ### Step 1: ...
+    ### Step 2: ...
+
+    ## Rules
+    1. ...
+    """
+```
+
+### How skills work
+- The class **docstring** becomes the skill prompt (markdown)
+- The AI follows the workflow steps, calling tools as needed
+- `tools` lists which Arena functions the skill can access
+- `trigger` is a regex — matching user messages auto-activate the skill
+- Skills run inside the chat agent, not as standalone code
+
+### Available system tools
+- `query_info` — Get query metadata, schema, and sample data
+- `create_app` — Create a new app/dashboard
+- `update_app` — Update an existing app
+- `deploy_app` — Deploy an app
+- `get_app` — Get app details
+
+Run `strot resources tools` to see all available tools.
+
+### Writing good skill prompts
+1. **Structure as steps** — Use `### Step N:` headers for each phase
+2. **One step per turn** — Tell the AI to STOP and wait after each step
+3. **Use real tool names** — Reference tools by their exact name
+4. **Include rules** — Add constraints at the end (e.g., "never guess columns")
+5. **Add examples** — Show sample tool calls and expected output formats
+
+### Prompt vs code attribute
+You can use either the docstring or a `prompt` class attribute:
+
+```python
+@skill(name='my_skill', ...)
+class MySkill:
+    prompt = """# My Skill
+    ...
+    """
+```
+
+The `prompt` attribute takes precedence over the docstring.
+
+## Testing
+```bash
+strot test          # Validate the skill definition
+strot deploy --dry-run  # See what would be deployed
+```
+
+## Deploying
+```bash
+strot deploy        # Deploy to your STROT instance
+```
+''',
+        },
+    },
 }
 
 
@@ -456,14 +591,14 @@ def _to_class_name(name: str) -> str:
 
 
 @click.command()
-@click.argument("project_type", type=click.Choice(["tool", "agent", "cortex", "page"]))
+@click.argument("project_type", type=click.Choice(["tool", "agent", "skill", "cortex", "page"]))
 @click.argument("name")
 @click.option("--description", "-d", default="", help="Project description")
 @click.option("--category", "-c", default="custom", help="Category")
 def init(project_type, name, description, category):
     """Scaffold a new STROT project.
 
-    PROJECT_TYPE: tool, agent, cortex, or page
+    PROJECT_TYPE: tool, agent, skill, cortex, or page
     NAME: Project name (e.g., my-calculator)
     """
     template = TEMPLATES.get(project_type)

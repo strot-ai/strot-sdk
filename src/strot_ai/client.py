@@ -560,6 +560,61 @@ class StrotClient:
             pass
         return None
 
+    # ── Skill Deploy ─────────────────────────────────────────────
+
+    def deploy_skill(
+        self,
+        name: str,
+        prompt: str,
+        description: str = "",
+        category: str = "custom",
+        tools: Optional[List[str]] = None,
+        trigger: str = "",
+        emoji: str = "",
+        icon: str = "",
+        examples: Optional[List[str]] = None,
+    ) -> DeployResult:
+        """Deploy a skill to the STROT instance.
+
+        Skills are ArenaFunctions with type=SKILL. The prompt is the
+        markdown workflow that guides the AI through a multi-step process.
+        """
+        existing = self._find_function_by_name(name)
+
+        payload = {
+            "name": name,
+            "code": prompt,
+            "function_type": "skill",
+            "description": description,
+            "category": category,
+            "language": "python",
+            "skill_tools": tools or [],
+            "trigger_pattern": trigger,
+            "skill_emoji": emoji,
+            "icon": icon,
+            "examples": examples or [],
+        }
+
+        if existing:
+            data = self.put(f"/api/arena/code-functions/{existing['id']}", data=payload)
+            return DeployResult(
+                success=True,
+                id=existing["id"],
+                name=name,
+                url=f"{self.config.url}/arena/{existing['id']}",
+                action="updated",
+            )
+        else:
+            data = self.post("/api/arena/code-functions", data=payload)
+            new_id = data.get("id")
+            return DeployResult(
+                success=True,
+                id=new_id,
+                name=name,
+                url=f"{self.config.url}/arena/{new_id}" if new_id else None,
+                action="created",
+            )
+
     # ── Auth (used by CLI) ──────────────────────────────────────
 
     def whoami(self) -> Dict[str, Any]:
